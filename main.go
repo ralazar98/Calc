@@ -22,6 +22,10 @@ func Solution(operator, firstValue, secondValue string) {
 	case firstNumber == 0 && secondNumber == 0:
 		firstNumber, secondNumber = RomanToArabic(firstValue, secondValue)
 		resultArab := Calculation(operator, firstNumber, secondNumber)
+		if resultArab < 0 {
+			fmt.Println("Выдача паники,так как в римской системе нет отрицательных чисел. ")
+			os.Exit(0)
+		}
 		resultRoman := ArabicToRoman(resultArab)
 		fmt.Println(resultRoman)
 	case firstNumber == 0 && secondNumber != 0 || firstNumber != 0 && secondNumber == 0:
