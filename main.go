@@ -11,7 +11,8 @@ import (
 func main() {
 
 	Solution(GetVarOper())
-
+	test := "Тестовая строка"
+	fmt.Printf(test)
 }
 
 func Solution(operator, firstValue, secondValue string) {
