@@ -10,35 +10,36 @@ import (
 
 func main() {
 
-	Solution(GetVarOper())
-	test := "Тестовая строка"
-	fmt.Printf(test)
+	Solution(GetValOper())
+
 }
 
+// Solution выбирает решение задачи взависимости от введенных данных
 func Solution(operator, firstValue, secondValue string) {
-	firstNumber, _ := strconv.Atoi(firstValue)
-	secondNumber, _ := strconv.Atoi(secondValue)
+	firstNumberInt, _ := strconv.Atoi(firstValue)
+	secondNumberInt, _ := strconv.Atoi(secondValue)
 
 	switch {
-	case firstNumber == 0 && secondNumber == 0:
-		firstNumber, secondNumber = RomanToArabic(firstValue, secondValue)
-		resultArab := Calculation(operator, firstNumber, secondNumber)
+	case firstNumberInt == 0 && secondNumberInt == 0:
+		firstNumberInt, secondNumberInt = RomanToArabic(firstValue, secondValue)
+		resultArab := Calculation(operator, firstNumberInt, secondNumberInt)
 		if resultArab < 0 {
 			fmt.Println("Выдача паники,так как в римской системе нет отрицательных чисел. ")
 			os.Exit(0)
 		}
-		resultRoman := ArabicToRoman(resultArab)
-		fmt.Println(resultRoman)
-	case firstNumber == 0 && secondNumber != 0 || firstNumber != 0 && secondNumber == 0:
+		fmt.Println(ArabicToRoman(resultArab))
+	case firstNumberInt == 0 && secondNumberInt != 0 || firstNumberInt != 0 && secondNumberInt == 0:
 		fmt.Println("Выдача паники, так как используются одновременно разные системы счисления.")
-	case firstNumber < 1 || firstNumber > 10 || secondNumber < 1 || secondNumber > 10:
+	case firstNumberInt < 1 || firstNumberInt > 10 || secondNumberInt < 1 || secondNumberInt > 10:
 		fmt.Println("Выдача паники, как минимум 1 число вне диапазона ")
 	default:
-		fmt.Println(Calculation(operator, firstNumber, secondNumber))
+		fmt.Println(Calculation(operator, firstNumberInt, secondNumberInt))
 	}
 
 }
 
+// RomanToArabic переводит римские числа в арабские для дальнейшего вычисления результата
+// Работает только с числами от 1-10.
 func RomanToArabic(firstRomanValue, secondRomanValue string) (int, int) {
 	var firstValue, secondValue int
 	var romanToArabic = map[string]int{
@@ -64,6 +65,7 @@ func RomanToArabic(firstRomanValue, secondRomanValue string) (int, int) {
 	return firstValue, secondValue
 }
 
+// ArabicToRoman возвращает полученный результат в римскую систему исчисления
 func ArabicToRoman(result int) string {
 	var arabicToRoman = map[int]string{
 		1:   "I",
@@ -89,6 +91,8 @@ func ArabicToRoman(result int) string {
 	return romanResult
 }
 
+// Calculation выполняет операции сложения,вычитания,деления,уножения взависимости от полученных данных,
+// возвращает результат вычислений
 func Calculation(operator string, firstValue, secondValue int) int {
 	var result int
 	switch operator {
@@ -104,23 +108,25 @@ func Calculation(operator string, firstValue, secondValue int) int {
 	return result
 }
 
-func GetVarOper() (string, string, string) {
+// GetValOper считывает вводимую в терминал строку и возвращает операнды и оператор, если это возможно
+func GetValOper() (string, string, string) {
 
 	var operator, firstValue, secondValue string
-	var counterOfOperation int
+	var counterOfOperators int
 
-	//Считывание введенного выражения
+	//Считывание введенного выражения и удаление случайных пробелов
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Введите операцию:")
+	fmt.Println("Введите математическую операцию:")
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
+	text = strings.ReplaceAll(text, " ", "")
 	stringLength := len(text)
 
-	//Определение чисел и проверка на количество операндов и оператора
+	//Определение операндов,оператора и проверка на их количество
 	for i := 0; i < stringLength; i++ {
 		checkedOperator := string(text[i])
 		if checkedOperator == "+" || checkedOperator == "-" || checkedOperator == "/" || checkedOperator == "*" {
-			if counterOfOperation == 1 {
+			if counterOfOperators == 1 {
 				fmt.Println("Выдача паники, так как формат математической операции не удовлетворяет заданию — " +
 					"два операнда и один оператор (+, -, /, *)")
 				os.Exit(0)
@@ -128,11 +134,10 @@ func GetVarOper() (string, string, string) {
 			firstValue = string(text[0:i])
 			secondValue = string(text[i+1 : stringLength])
 			operator = checkedOperator
-			counterOfOperation += 1
-
+			counterOfOperators += 1
 		}
 	}
-	if counterOfOperation == 0 {
+	if counterOfOperators == 0 {
 		fmt.Println("Выдача паники, так как строка не является математической операцией.")
 		os.Exit(0)
 	}
