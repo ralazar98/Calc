@@ -59,8 +59,7 @@ func RomanToArabic(firstRomanValue, secondRomanValue string) (int, int) {
 	firstValue = romanToArabic[firstRomanValue]
 	secondValue = romanToArabic[secondRomanValue]
 	if firstValue == 0 || secondValue == 0 {
-		fmt.Printf("Выдача паники, операнды должны быть целыми числами от 1 до 10 в римской или арабской " +
-			"системе исчисления")
+		fmt.Println("Выдача паники, неверно введенное число или недопустимый тип ")
 		os.Exit(0)
 	}
 	return firstValue, secondValue
