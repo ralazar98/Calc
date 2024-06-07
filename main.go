@@ -23,8 +23,9 @@ func Solution(operator, firstValue, secondValue string) {
 	case firstNumberInt == 0 && secondNumberInt == 0:
 		firstNumberInt, secondNumberInt = RomanToArabic(firstValue, secondValue)
 		resultArab := Calculation(operator, firstNumberInt, secondNumberInt)
-		if resultArab < 0 {
-			fmt.Println("Выдача паники,так как в римской системе нет отрицательных чисел. ")
+		if resultArab < 1 {
+			fmt.Println("Выдача паники,так как в римской системе нет отрицательных чисел и ответ " +
+				"не может быть равен 0. ")
 			os.Exit(0)
 		}
 		fmt.Println(ArabicToRoman(resultArab))
